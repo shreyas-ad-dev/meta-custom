@@ -1,0 +1,2 @@
+SUBSYSTEM=="net", ACTION=="change", KERNEL=="eth0", ATTR{carrier}=="1", RUN+="/usr/local/bin/set-static-ip.sh"
+SUBSYSTEM=="net", ACTION=="add", KERNEL=="eth0", RUN+="/usr/local/bin/set-static-ip.sh"

@@ -1,0 +1,37 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides: wifi-connect
+# Required-Start: networking
+# Requires-Stop:
+# Default-Start: S 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Automatically connect wlan0 via wpa_supplicant and dhcpcd
+### END INIT INFO
+
+case "$1" in
+    start)
+         echo "Initializing Wi-Fi connection..."
+         rfkill unblock wifi 2>/dev/null || true
+         killall wpa_supplicant 2>/dev/null || true
+         rm -rf /var/run/wpa_supplicant/wlan0
+         wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant.conf
+         sleep 3
+         dhcpcd -4 wlan0
+         ip route del default dev eth0 2>/dev/null || true
+         ;;
+    stop)
+        echo "Stopping Wi-Fi..."
+        killall wpa_supplicant 2>/dev/null || true
+        dhcpcd -k wlan0 2>/dev/null || true
+        ;;
+    restart|reload)
+        "$0" stop
+        sleep 1
+        "$0" start
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+exit 0
