@@ -1,0 +1,5 @@
+#!/bin/sh
+ip link set eth0 up
+ip addr replace @STATIC_IP_ETH0_SD@/24 dev eth0
+ip route flush dev eth0
+ip route add @STATIC_SUBNET_ETH0_SD@ dev eth0 src @STATIC_IP_ETH0_SD@ 2>/dev/null || true
