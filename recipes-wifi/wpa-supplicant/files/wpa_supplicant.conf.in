@@ -5,4 +5,11 @@ update_config=1
 network={
     ssid="@WIFI_SSID@"
     psk="@WIFI_PSK@"
+    priority=10
+}
+
+network={
+    ssid="@MOBILE_HOTSPOT_SSID@"
+    psk="@MOBILE_HOTSPOT_PSK@"
+    priority=5
 }

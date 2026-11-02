@@ -1,0 +1,9 @@
+# Disable DNS server functionality entirely, act purely as a DHCP server
+port=0
+
+# Listen only on the hotspot interface and localhost
+interface=uap0
+bind-interfaces
+
+# Assign IPs with a 24-hour lease time
+dhcp-range=@PI_HOTSPOT_DHCP_START@,@PI_HOTSPOT_DHCP_STOP@,255.255.255.0,24h

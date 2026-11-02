@@ -1,0 +1,43 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides: hotspot-init
+# Required-Start: networking
+# Required-Stop: 
+# Default-Start: S 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Initialize AP_STA virtual interface (uap0) and start hotspot
+### END INIT INFO
+
+case "$1" in
+    start)
+        echo "Setting up AP+STA virtual interface (uap0)..."
+
+        # Create virtual AP interface on wlan0 if it doesn't already exist
+        if ! iw dev uap0 info >/dev/null 2>&1; then
+            iw dev wlan0 interface add uap0 type __ap || true
+        fi
+
+        # Bring interface up and assign gatewway IP
+        ip link set uap0 up
+        ip addr replace @PI_HOTSPOT_GATEWAY@/24 dev uap0
+
+        # Start dnsmasq
+        echo "Starting dnsmasq..."
+        dnsmasq -C /etc/dnsmasq.conf
+
+        # Start hostapd in daemon mode
+        hostapd -B /etc/hostapd/hostapd.conf
+        ;;
+    stop)
+        echo "Stopping hotspot..."
+        killall hostapd || true
+        killall dnsmasq || true
+        ip link set uap0 down || true
+        iw dev uap0 del || true
+        ;;
+    *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+        ;;
+esac
+exit 0
