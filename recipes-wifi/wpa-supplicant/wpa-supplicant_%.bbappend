@@ -4,7 +4,7 @@ include conf/network-config.inc
 SRC_URI += "file://wpa_supplicant.conf.in"
 
 do_install:append() {
-    install -d ${D}${sysconfdir}/wpa_supplicant
+    install -d ${D}${sysconfdir}
     sed -e 's|@WIFI_SSID@|${WIFI_SSID}|g' \
         -e 's|@WIFI_PSK@|${WIFI_PSK}|g' \
         -e 's|@MOBILE_HOTSPOT_SSID@|${MOBILE_HOTSPOT_SSID}|g' \
