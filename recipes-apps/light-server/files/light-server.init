@@ -1,0 +1,38 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides: light-server
+# Required-Start: $network $remote_fs $syslog
+# Required-Stop: $remote_fs $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start HTTP light server on boot
+### END INFO
+
+DAEMON="/usr/bin/python3"
+DAEMON_ARGS="-u /usr/bin/scripts/light_server/light_server.py"
+PIDFILE="/var/run/light-server.pid"
+
+test -x $DAEMON || exit 0
+
+case "$1" in
+  start)
+    echo "Starting light server..."
+    start-stop-daemon --start --background --make-pidfile --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_ARGS
+    echo "Done."
+    ;;
+  stop)
+    echo "Stopping light server..."
+    start-stop-daemon --stop --pidfile $PIDFILE --retry 10
+    echo "Done."
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  *)
+    echo "Usage: /etc/init.d/light-server {start|stop|restart}"
+    exit 1
+    ;;
+esac
+
+exit 0

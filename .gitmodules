@@ -1,0 +1,3 @@
+[submodule "recipes-apps/python3-rpi-ws281x/files/rpi-ws281x-python"]
+	path = recipes-apps/python3-rpi-ws281x/files/rpi-ws281x-python
+	url = https://github.com/rpi-ws281x/rpi-ws281x-python.git

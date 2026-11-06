@@ -18,5 +18,12 @@ IMAGE_INSTALL:append = " \
     wifi-setup \
     hotspot-init \
     static-ip-sd \
+    python3 \
+    python3-pip \
+    python3-modules \
+    python3-rpi-ws281x \
+    terminal-keypad-app \
+    light-server \
+    evtest \
 "
 
